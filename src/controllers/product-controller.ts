@@ -1,7 +1,12 @@
 import { Request, Response } from "express";
+import Debug from 'debug'
 
-// Services/get function
+// Debug instance
+const debug = Debug('prisma-products:product-controller')
+
+// Services
 import { getAllProducts, getProduct } from "../services/get";
+import { postProduct } from "../services/post";
 
 // Index all products
 export const index = async (req:Request, res:Response) => {
@@ -35,7 +40,7 @@ export const show = async (req:Request, res:Response) => {
 
         const product = await getProduct(itemId)
 
-        // Check if product is empty
+        // Check if product is available
         if(!product) {
             res.status(404).send({
                 status: "fail",
@@ -52,6 +57,28 @@ export const show = async (req:Request, res:Response) => {
         res.status(500).send({
             status: "Error",
             message: "No response from the server"
+        })
+    }
+}
+
+// Create new product
+export const store = async (req:Request, res:Response) => {
+    try {
+        // Create the new product
+        const productData = await postProduct(req.body)
+        // Get the post from the database as a verification that the data has been saved.
+        const showProduct = await getProduct(productData.id)
+        res.status(200).send({
+            status: "success",
+            data: showProduct
+        })
+    }
+    catch (err) {
+        debug("Error on product: ", req.body, err)
+        res.status(500).send({
+            status: "Error",
+            message: "No response from the server",
+            Error: err
         })
     }
 }
