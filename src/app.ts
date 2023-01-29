@@ -1,4 +1,5 @@
 import express from 'express'
+import routes from './routes'
 
 // Init app
 const app = express()
@@ -7,6 +8,7 @@ const app = express()
 app.use(express.json())
 
 // Routes:
+app.use(routes)
 
 // export app
 export default app
