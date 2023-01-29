@@ -1,11 +1,41 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
+}
+
+model Products {
+  id             Int     @id @default(autoincrement())
+  name           String
+  description    String  @db.LongText
+  price          Int //min 1
+  images         Json    @default("{}")
+  stock_status   String
+  stock_quantity Int //min 0
+  on_sale        Boolean @default(false)
+}
+
+model Order {
+  id                  Int     @id @default(autoincrement())
+  customer_first_name String
+  customer_last_name  String
+  customer_adress     String
+  customer_poscode    String  @db.VarChar(6)
+  customer_city       String
+  customer_email      String  @unique
+  customer_phone      String?
+  order_total         Int //min 1
+  order_date          String?
+  created_at          String?
+  updated_at          String?
+}
+
+model OrderItems {
+  product_id Int @id //min 1
+  qty        Int //min 1
+  item_price Int //min 1
+  item_total Int //min 1
 }
