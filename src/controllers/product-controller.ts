@@ -20,7 +20,7 @@ export const index = async (req:Request, res:Response) => {
     catch (err) {
         res.status(500).send({
             status: "Error",
-            message: "No response from the server" // Use debug here or more info.
+            message: "No response from the server"
         })
     }
 }
@@ -37,9 +37,7 @@ export const show = async (req:Request, res:Response) => {
             })
             return
         }
-
         const product = await getProduct(itemId)
-
         // Check if product is available
         if(!product) {
             res.status(404).send({
@@ -61,7 +59,7 @@ export const show = async (req:Request, res:Response) => {
     }
 }
 
-// Create new product
+// Store new product
 export const store = async (req:Request, res:Response) => {
     try {
         // Create the new product

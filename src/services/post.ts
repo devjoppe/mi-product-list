@@ -11,6 +11,7 @@ export const postProduct = async (itemData:any) => {
             images: itemData.images,
             stock_status: itemData.stock_status,
             stock_quantity: itemData.stock_quantity,
+            // Note to self: I worked with this way to long and the only problem was that I forgot on_sale on itemData. Love coding and thank you debugging tool.
             on_sale: itemData.on_sale
         }
     })
