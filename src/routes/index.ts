@@ -13,4 +13,12 @@ routes.get('/', (req:Request, res:Response) => {
 
 routes.use('/products', products)
 
+// 404 - data not found
+routes.get('/*', (req:Request, res:Response) => {
+    res.status(404).send({
+        status: "fail",
+        message: "No data found"
+    })
+})
+
 export default routes
