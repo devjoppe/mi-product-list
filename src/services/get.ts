@@ -14,3 +14,12 @@ export const getAllProducts = async () => {
     })
     return products
 }
+
+export const getProduct = async (itemId:number) => {
+    const product = await prisma.products.findUnique( {
+        where: {
+            id: itemId
+        }
+    })
+    return product
+}
