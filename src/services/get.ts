@@ -36,3 +36,16 @@ export const getOrders = async () => {
     })
     return orders
 }
+
+// Get a specific order based on ID with orderItems
+export const getOrder = async (orderId:number) => {
+    const order = await prisma.order.findUnique({
+        where: {
+            id: orderId
+        },
+        include: {
+            order_items: true
+        }
+    })
+    return order
+}
