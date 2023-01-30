@@ -15,6 +15,7 @@ export const getAllProducts = async () => {
     return products
 }
 
+// Get specific product from ID
 export const getProduct = async (itemId:number) => {
     const product = await prisma.products.findUnique( {
         where: {
@@ -22,4 +23,16 @@ export const getProduct = async (itemId:number) => {
         }
     })
     return product
+}
+
+// Get orders
+export const getOrders = async () => {
+    const orders = await prisma.order.findMany({
+        orderBy: [
+            {
+                id: "asc"
+            }
+        ]
+    })
+    return orders
 }
