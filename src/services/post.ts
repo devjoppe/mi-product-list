@@ -20,9 +20,27 @@ export const postProduct = async (itemData:any) => {
 
 export const postOrder = async (orderData:any) => {
     console.log(orderData)
-    /* const order = await prisma.order.create({
+    const order = await prisma.order.create({
         data: {
-
+            customer_first_name: orderData.customer_first_name,
+            customer_last_name: orderData.customer_last_name,
+            customer_adress: orderData.customer_adress,
+            customer_postcode: orderData.customer_postcode,
+            customer_city: orderData.customer_city,
+            customer_email: orderData.customer_email,
+            order_total: orderData.order_total,
+            order_items: {
+                createMany: {
+                    data: [
+                        {
+                            product_id: orderData.product_id,
+                            qty: orderData.qty,
+                            item_price: orderData.item_price,
+                            item_total: orderData.item_total
+                        },
+                    ]
+                }
+            }
         }
-    }) */
+    })
 }
