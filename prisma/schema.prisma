@@ -8,33 +8,39 @@ datasource db {
 }
 
 model Products {
-  id             Int     @id @default(autoincrement())
+  id             Int          @id @default(autoincrement())
   name           String
-  description    String  @db.LongText
+  description    String       @db.LongText
   price          Int //min 1
-  images         Json    @default("{}")
+  images         Json         @default("{}")
   stock_status   String
   stock_quantity Int //min 0
-  on_sale        Boolean @default(false)
+  on_sale        Boolean      @default(false)
+  order_items    OrderItems[]
 }
 
 model Order {
-  id                  Int     @id @default(autoincrement())
+  id                  Int          @id @default(autoincrement())
   customer_first_name String
   customer_last_name  String
   customer_adress     String
-  customer_poscode    String  @db.VarChar(6)
+  customer_poscode    String       @db.VarChar(6)
   customer_city       String
-  customer_email      String  @unique
+  customer_email      String       @unique
   customer_phone      String?
   order_total         Int //min 1
   order_date          String?
   created_at          String?
   updated_at          String?
+  order_items         OrderItems[]
 }
 
 model OrderItems {
-  product_id Int @id //min 1
+  id         Int      @id @default(autoincrement())
+  order_id   Int //min 1
+  order      Order    @relation(fields: [order_id], references: [id])
+  product_id Int //min 1
+  product    Products @relation(fields: [product_id], references: [id])
   qty        Int //min 1
   item_price Int //min 1
   item_total Int //min 1
