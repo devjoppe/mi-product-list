@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
 
 // Services
-import {getOrders, getOrder, getProduct} from "../services/get";
+import {getOrders, getOrder } from "../services/get";
+import { postOrder } from "../services/post";
 
 // Index all orders
 export const index = async (req:Request, res:Response) => {
@@ -20,6 +21,7 @@ export const index = async (req:Request, res:Response) => {
     }
 }
 
+// Show order and order items based on ID
 export const show = async (req:Request, res:Response) => {
     try {
         const orderId = Number(req.params.id)
@@ -51,4 +53,8 @@ export const show = async (req:Request, res:Response) => {
             message: "No response from the server"
         })
     }
+}
+
+export const store = async (req:Request, res:Response) => {
+    console.log(req.body.order_items)
 }

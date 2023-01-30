@@ -17,3 +17,12 @@ export const postProduct = async (itemData:any) => {
     })
     return product
 }
+
+export const postOrder = async (orderData:any) => {
+    console.log(orderData)
+    /* const order = await prisma.order.create({
+        data: {
+
+        }
+    }) */
+}
