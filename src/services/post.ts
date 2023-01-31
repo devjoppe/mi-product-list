@@ -32,6 +32,7 @@ export const postOrder = async (orderData:any) => {
             customer_email: orderData.customer_email,
             customer_phone: orderData.customer_phone,
             order_total: orderData.order_total,
+            order_date: date,
             created_at: date,
             updated_at: date,
             order_items: {

@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import {check, validationResult} from "express-validator";
+import { matchedData, validationResult } from "express-validator";
 import Debug from 'debug'
 
 // Debug instance
@@ -78,7 +78,6 @@ export const store = async (req:Request, res:Response) => {
     let checkProduct
     orderItems.forEach((item:any) => {
         itemsArr.push(item.product_id)
-        console.log("Arrays: ", itemsArr)
     })
 
     for(let item of itemsArr) {
@@ -86,13 +85,15 @@ export const store = async (req:Request, res:Response) => {
         if(!checkProduct) {
             return res.status(400).send({
                 status: "fail",
-                message: "The product does not exist"
+                message: "A product you trying to order does not exists"
             })
         }
     }
 
+    const validatedData = matchedData(req)
+
     try {
-        const order = await postOrder(req.body)
+        const order = await postOrder(validatedData)
         res.status(200).send({
             status: "success",
             data: order
