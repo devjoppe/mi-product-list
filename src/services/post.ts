@@ -1,5 +1,4 @@
 import { PrismaClient } from "@prisma/client";
-import {getOrder} from "./get";
 const prisma = new PrismaClient()
 
 // Post new product
@@ -20,7 +19,9 @@ export const postProduct = async (itemData:any) => {
 }
 
 export const postOrder = async (orderData:any) => {
+    const date = String(new Date())
     const orderItems = orderData.order_items
+    console.log("Datatype: ", orderItems.item_price)
     const order = await prisma.order.create({
         data: {
             customer_first_name: orderData.customer_first_name,
@@ -31,16 +32,18 @@ export const postOrder = async (orderData:any) => {
             customer_email: orderData.customer_email,
             customer_phone: orderData.customer_phone,
             order_total: orderData.order_total,
+            created_at: date,
+            updated_at: date,
             order_items: {
                 create: orderItems.map((item:any) => ({
                     product: {
                         connect: {
-                            id: item.product_id
+                            id: Number(item.product_id)
                         }
                     },
                     qty: item.qty,
-                    item_price: item.item_price,
-                    item_total: item.item_total
+                    item_price: Number(item.item_price),
+                    item_total: Number(item.item_total)
                 }))
             }
         },
