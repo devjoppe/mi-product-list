@@ -1,4 +1,8 @@
 import { Request, Response } from "express";
+import Debug from 'debug'
+
+// Debug instance
+const debug = Debug('prisma-products:order-controller')
 
 // Services
 import {getOrders, getOrder } from "../services/get";
@@ -56,5 +60,18 @@ export const show = async (req:Request, res:Response) => {
 }
 
 export const store = async (req:Request, res:Response) => {
-    console.log(req.body.order_items)
+    try {
+        const order = await postOrder(req.body)
+        res.status(200).send({
+            status: "success",
+            data: order
+        })
+    }
+    catch (err) {
+        debug("Error on order: ", req.body, err)
+        res.status(500).send({
+            status: "Error",
+            message: "No response from the server"
+        })
+    }
 }

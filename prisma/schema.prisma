@@ -24,7 +24,7 @@ model Order {
   customer_first_name String
   customer_last_name  String
   customer_adress     String
-  customer_postcode    String       @db.VarChar(6)
+  customer_postcode   String       @db.VarChar(6)
   customer_city       String
   customer_email      String       @unique
   customer_phone      String?
