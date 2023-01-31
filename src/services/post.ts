@@ -43,6 +43,9 @@ export const postOrder = async (orderData:any) => {
                     item_total: item.item_total
                 }))
             }
+        },
+        include: {
+            order_items: true
         }
     })
     return order

@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { validationResult } from "express-validator";
 import Debug from 'debug'
 
 // Debug instance
@@ -61,6 +62,14 @@ export const show = async (req:Request, res:Response) => {
 
 // Store new product
 export const store = async (req:Request, res:Response) => {
+    // Validation check
+    const validationErrors = validationResult(req)
+    if(!validationErrors.isEmpty()) {
+        return res.status(400).send({
+            status: "fail",
+            data: validationErrors.array()
+        })
+    }
     try {
         // Create the new product
         const productData = await postProduct(req.body)
@@ -76,7 +85,6 @@ export const store = async (req:Request, res:Response) => {
         res.status(500).send({
             status: "Error",
             message: "No response from the server",
-            Error: err
         })
     }
 }
