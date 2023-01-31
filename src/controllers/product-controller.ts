@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { validationResult } from "express-validator";
+import { matchedData, validationResult } from "express-validator";
 import Debug from 'debug'
 
 // Debug instance
@@ -70,9 +70,13 @@ export const store = async (req:Request, res:Response) => {
             data: validationErrors.array()
         })
     }
+
+    // Validated Data
+    const validatedData = matchedData(req)
+
     try {
         // Create the new product
-        const productData = await postProduct(req.body)
+        const productData = await postProduct(validatedData)
         // Get the post from the database as a verification that the data has been saved.
         const showProduct = await getProduct(productData.id)
         res.status(200).send({
