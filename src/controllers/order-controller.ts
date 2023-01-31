@@ -1,13 +1,14 @@
 import { Request, Response } from "express";
-import { validationResult } from "express-validator";
+import {check, validationResult} from "express-validator";
 import Debug from 'debug'
 
 // Debug instance
 const debug = Debug('prisma-products:order-controller')
 
 // Services
-import {getOrders, getOrder } from "../services/get";
+import {getOrders, getOrder, getAllProducts} from "../services/get";
 import { postOrder } from "../services/post";
+import { getProduct } from "../services/get";
 
 // Index all orders
 export const index = async (req:Request, res:Response) => {
@@ -60,6 +61,7 @@ export const show = async (req:Request, res:Response) => {
     }
 }
 
+// Store order
 export const store = async (req:Request, res:Response) => {
     // Validation check
     const validationErrors = validationResult(req)
@@ -69,6 +71,26 @@ export const store = async (req:Request, res:Response) => {
             data: validationErrors.array()
         })
     }
+
+    // Check if product exists
+    const orderItems = req.body.order_items
+    let itemsArr:any = []
+    let checkProduct
+    orderItems.forEach((item:any) => {
+        itemsArr.push(item.product_id)
+        console.log("Arrays: ", itemsArr)
+    })
+
+    for(let item of itemsArr) {
+        checkProduct = await getProduct(item)
+        if(!checkProduct) {
+            return res.status(400).send({
+                status: "fail",
+                message: "The product does not exist"
+            })
+        }
+    }
+
     try {
         const order = await postOrder(req.body)
         res.status(200).send({
