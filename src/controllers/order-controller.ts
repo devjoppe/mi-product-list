@@ -72,24 +72,6 @@ export const store = async (req:Request, res:Response) => {
         })
     }
 
-    // Check if product exists
-    const orderItems = req.body.order_items
-    let itemsArr:any = []
-    let checkProduct
-    orderItems.forEach((item:any) => {
-        itemsArr.push(item.product_id)
-    })
-
-    for(let item of itemsArr) {
-        checkProduct = await getProduct(item)
-        if(!checkProduct) {
-            return res.status(400).send({
-                status: "fail",
-                message: "A product you trying to order does not exists"
-            })
-        }
-    }
-
     // Validated Data
     const validatedData = matchedData(req)
 
