@@ -6,9 +6,8 @@ import Debug from 'debug'
 const debug = Debug('prisma-products:order-controller')
 
 // Services
-import {getOrders, getOrder, getAllProducts} from "../services/get";
+import {getOrders, getOrder } from "../services/get";
 import { postOrder } from "../services/post";
-import { getProduct } from "../services/get";
 
 // Index all orders
 export const index = async (req:Request, res:Response) => {

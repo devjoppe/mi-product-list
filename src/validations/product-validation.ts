@@ -2,7 +2,6 @@ import { body } from "express-validator";
 
 // Import services
 
-
 // Custom validations
 
 export const createProductRules = [
