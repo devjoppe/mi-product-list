@@ -16,7 +16,6 @@ export const createOrderRules = [
     body('customer_last_name').isString().withMessage('Needs to be a string'),
     body('customer_adress').isString().withMessage('Needs to be a string'),
     body('customer_city').isString().withMessage('Needs to be a string'),
-    body('customer_phone').isString().withMessage('Needs to be a string'),
     body('customer_postcode').isString().isLength({ min:6 }).withMessage('Needs to be a string with minimum of 6 characters'),
     body('customer_email').isEmail().withMessage('Needs to be a valid email'),
     body('order_total').isInt().toInt().isLength( {min: 1} ),

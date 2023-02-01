@@ -19,7 +19,11 @@ export const postProduct = async (itemData:any) => {
 }
 
 export const postOrder = async (orderData:any) => {
-    const date = String(new Date())
+
+    const currentDate = new Date().toLocaleDateString()
+    const currentTime = new Date().toLocaleTimeString()
+    const date = currentDate+", "+currentTime
+
     const orderItems = orderData.order_items
     console.log("Datatype: ", orderItems.item_price)
     const order = await prisma.order.create({
