@@ -1,4 +1,4 @@
-import { body } from 'express-validator'
+import { body, CustomValidator } from 'express-validator'
 
 // Import services
 

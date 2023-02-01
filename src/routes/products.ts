@@ -1,5 +1,7 @@
 import express from "express";
-import { body } from 'express-validator'
+
+// Import validation rules
+import { createProductRules } from "../validations/product-validation";
 
 // Import controllers for products
 import { index, show, store } from "../controllers/product-controller";
@@ -9,13 +11,6 @@ const router = express.Router()
 // products routes
 router.get('/', index)
 router.get("/:id", show)
-router.post("/", [
-    body('name').isString().isLength({min:1}).withMessage('Needs to be a string and a minimum of 1 characters'),
-    body('description').isString().withMessage('Needs to be a string'),
-    body('price').isInt().toInt().bail().isLength({min: 1}).withMessage('Needs a number'),
-    body('images').isObject().isLength({min: 1}).withMessage('Needs to be in objects with "large" and "thumbnail"'),
-    body('stock_status').isString().withMessage('Needs to be a string'),
-    body('stock_quantity').isInt().isLength({min: 0}).withMessage('Needs a number')
-], store)
+router.post("/", createProductRules, store)
 
 export default router
