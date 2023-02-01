@@ -1,9 +1,10 @@
-import { body, CustomValidator, check } from 'express-validator'
+import { body, CustomValidator } from 'express-validator'
 
 // Import services
 import { getProduct } from "../services/get";
 
 // Custom validations
+// I know Johan, this is a hack that hit every branch on the way down!
 let arrCount:number
 
 // Check if the product exists
@@ -27,16 +28,51 @@ const correctPrice: CustomValidator = async (value, { req })=> {
     }
 }
 
+// Check the total price
+const totalPrice: CustomValidator = async (value, { req })=> {
+    const productPrice = req.body.order_items
+    let totalPrice:number = 0
+    for(let i = 0; i < productPrice.length; i++) {
+        totalPrice += productPrice[i].item_total
+    }
+    console.log(totalPrice)
+    if(totalPrice !== value) {
+        return Promise.reject('The total price is incorrect')
+    }
+}
+
+// Check if qty is possible to order against product stock_quantity
+const checkQty: CustomValidator = async (value, { req })=> {
+
+}
+
 export const createOrderRules = [
-    body('customer_first_name').isString().isLength({min:3}).withMessage("Needs to be a string, with minimum of 3 chars."),
-    body('customer_last_name').isString().withMessage('Needs to be a string'),
-    body('customer_adress').isString().withMessage('Needs to be a string'),
-    body('customer_city').isString().withMessage('Needs to be a string'),
-    body('customer_postcode').isString().isLength({ min:6 }).withMessage('Needs to be a string with minimum of 6 characters'),
-    body('customer_email').isEmail().withMessage('Needs to be a valid email'),
-    body('order_total').isInt().toInt().isLength( {min: 1} ),
-    body('order_items.*.product_id').isInt().toInt().isLength({min:1}).withMessage('Must be a number with a minimum of 1').custom(existProduct).bail(),
-    body('order_items.*.qty').isInt().toInt().isLength({min:1}).withMessage('Must be a number with a minimum of 1'),
-    body('order_items.*.item_price').isInt().toInt().isLength({min:1}).withMessage('Must be a number with a minimum of 1').custom(correctPrice),
-    body('order_items.*.item_total').isInt().toInt().isLength({min:1}).withMessage('Must be a number with a minimum of 1')
+    body('customer_first_name')
+        .isString().isLength({min:3}).withMessage("Needs to be a string, with minimum of 3 chars."),
+    body('customer_last_name')
+        .isString().withMessage('Needs to be a string'),
+    body('customer_adress')
+        .isString().withMessage('Needs to be a string'),
+    body('customer_city')
+        .isString().withMessage('Needs to be a string'),
+    body('customer_postcode')
+        .isString().isLength({ min:6 }).withMessage('Needs to be a string with minimum of 6 characters'),
+    body('customer_email')
+        .isEmail().withMessage('Needs to be a valid email'),
+    body('order_items.*.product_id')
+        .isInt().toInt().isLength({min:1}).withMessage('Must be a number with a minimum of 1')
+        .custom(existProduct).bail(),
+    body('order_items.*.qty')
+        .isInt().toInt().isLength({min:1})
+        .withMessage('Must be a number with a minimum of 1')
+        .custom(checkQty),
+    body('order_items.*.item_price')
+        .isInt().toInt().isLength({min:1}).withMessage('Must be a number with a minimum of 1')
+        .custom(correctPrice),
+    body('order_items.*.item_total')
+        .isInt().toInt().isLength({min:1})
+        .withMessage('Must be a number with a minimum of 1'),
+    body('order_total')
+        .isInt().toInt().isLength({min: 1})
+        .custom(totalPrice)
 ]
