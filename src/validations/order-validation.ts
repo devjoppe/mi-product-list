@@ -35,7 +35,6 @@ const checkQty: CustomValidator = async (value, { req })=> {
     qtyCount++
     const productId = req.body.order_items[qtyCount].product_id
     const product = await getProduct(productId)
-    console.log(product?.stock_quantity)
     if(product) {
         if(product.stock_quantity < value) {
             return Promise.reject('The total items in qty is higher then the product stock stock quantity')
@@ -50,11 +49,10 @@ const totalPrice: CustomValidator = (value, { req })=> {
     for(let i = 0; i < productPrice.length; i++) {
         totalPrice += productPrice[i].item_total
     }
-    console.log(totalPrice)
-    console.log(value)
         if(totalPrice != value) {
             return Promise.reject('The total price is incorrect')
         }
+        // Don´t really know why I must return this value?
         return value
 }
 
