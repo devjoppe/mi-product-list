@@ -27,7 +27,6 @@ CREATE TABLE `Order` (
     `created_at` VARCHAR(191) NULL,
     `updated_at` VARCHAR(191) NULL,
 
-    UNIQUE INDEX `Order_customer_email_key`(`customer_email`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
