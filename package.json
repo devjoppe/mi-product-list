@@ -2,9 +2,9 @@
   "name": "mi-product-api",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
+  "main": "build/server.js",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && npm prisma migrate deploy",
     "dev": "cross-env DEBUG=prisma-products:* nodemon server.ts",
     "start": "node build/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
